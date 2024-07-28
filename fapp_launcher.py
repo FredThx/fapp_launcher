@@ -33,7 +33,7 @@ class FAppLauncher:
             self.shortcuts = []
         self.icon.menu = pystray.Menu(
                         *[pystray.MenuItem(link, self.on_event) for link in self.names],
-                        pystray.MenuItem("----", None),
+                        pystray.Menu.SEPARATOR,
                         *[pystray.MenuItem(event, self.on_event) for event in self.sys_events.values()]
                         )
     @property
