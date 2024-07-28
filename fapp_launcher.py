@@ -3,6 +3,7 @@ from PIL import Image
 from pathlib import Path
 import os, sys
 import argparse
+from typing import Generator
 
 class FAppLauncher:
     '''Un lanceur de raccourcis pour windows
@@ -27,15 +28,26 @@ class FAppLauncher:
         '''read the path, populate self.shortcuts and update self.icon
         '''
         self.path = Path(path) if path else self.path
-        try:
-            self.shortcuts = [file for file in self.path.iterdir() if file.is_file()]
-        except FileNotFoundError:
-            self.shortcuts = []
+        self.shortcuts = []
         self.icon.menu = pystray.Menu(
-                        *[pystray.MenuItem(link, self.on_event) for link in self.names],
+                        *self.iter_path(),
                         pystray.Menu.SEPARATOR,
                         *[pystray.MenuItem(event, self.on_event) for event in self.sys_events.values()]
                         )
+    def iter_path(self, path:str|Path|None = None)->Generator[pystray.MenuItem, None, None]:
+        '''Return a generator of Items from path with sub directory
+        '''
+        try:
+            path = Path(path) if path else self.path
+            for p in path.iterdir():
+                if p.is_file():
+                    yield pystray.MenuItem(p.stem, self.on_event)
+                    self.shortcuts.append(p)
+                elif p.is_dir():
+                    yield pystray.MenuItem(p.stem, pystray.Menu(*self.iter_path(p)))
+        except FileNotFoundError:
+            pass
+
     @property
     def names(self)->list[str]:
         return [file.stem for file in self.shortcuts]
