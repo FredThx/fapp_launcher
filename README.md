@@ -27,4 +27,4 @@ Default path is ./menu
 
 #### A systray menu 
 
-![Capture](./capture.PNG "capture")
+![Capture](./Capture.PNG "capture")
