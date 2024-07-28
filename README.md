@@ -1,6 +1,8 @@
 # FApp Lancher
 
-A Applications launcher from windows systray
+A Applications launcher from windows systray.
+
+A good alternative to the customised Windows toolbars that disappeared with version 11.
 
 ## Installation
 
@@ -24,7 +26,6 @@ options:
 
 Default path is ./menu
 
-
-#### A systray menu 
+#### A systray menu
 
 ![Capture](./Capture.PNG "capture")
